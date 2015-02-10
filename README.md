@@ -16,8 +16,35 @@ HIPAAgram is an example app written to show the capabilities of the Catalyze HIP
 * Create an API Key
 * Insert the full 3 part API Key (<type> <identifier> <id>) in the `application:didFinishLaunchingWithOptions:` method in the AppDelegate.m file
 * Insert the application ID from the dashboard in the `application:didFinishLaunchingWithOptions:` method in the AppDelegate.m file
+* In `SignInViewController.m` you need to change the hardcoded email to an email address you can access. Change this line `return [NSString stringWithFormat:@"josh+%@@catalyze.io", randomString];` to be something such as `return [NSString stringWithFormat:@"me+%@@mydomain.com", randomString];`. Notice the `me` and `mydomain.com`.
 
-Now that we have our org and app setup, we need to create a few custom classes. Create a custom class named `conversations` with the following schema. Be sure to mark PHI as `true`.
+Now that we have our org and app setup, we need to create a few custom classes and assign appropriate permissions. There are two ways to accomplish this, run a script or do it manually with cURL commands.
+
+Run a Script
+------------
+From the root of the project you will see a folder called `Setup`. Open up terminal and navigate to this folder
+
+```
+cd Setup
+```
+
+This is a simple python script that will take care of everything for us, creating the appropriate custom classes and setting the correct read/write permissions on those classes. There is one dependency for this script, the python `Requests` library. To install this run
+
+```
+sudo pip install requests
+```
+
+Feel free to make this folder a [Virtual Env](https://virtualenv.pypa.io/en/latest/) and run the install that way as well. Now that we have the dependency installed let's run the script!
+
+```
+python HipaaGramSetup.py --username MY_EMAIL --password MY_PASSWORD --appId MY_APP_ID --apiKey MY_API_KEY
+```
+
+Be sure to replace the values of `MY_EMAIL`, `MY_PASSWORD`, `MY_APP_ID`, and `MY_API_KEY` with your specific values. The script will tell you once everything finishes and you're all set! There is no need to perform the manual commands if you run this script, skip on down to `iOS Project Setup`.
+
+Manual Commands
+---------------
+Create a custom class named `conversations` with the following schema. Be sure to mark PHI as `true`.
 
 ```
 {
@@ -63,7 +90,27 @@ Lastly, create a custom class named `messages` with the following schema. Be sur
 }
 ```
 
-Lastly you need to run
+Now we need to set the appropriate permissions for these three classes. To learn about setting permissions, check out [this guide](https://resources.catalyze.io/baas/guides/permissions-and-acls/#granting-full-permissions-on-a-custom-class). You can run cURL commands or use the REST client of your choice to run these commands. For the `conversations` class we need to assign the following permissions
+
+```
+['create', 'retrieve']
+```
+
+For the `contacts` class assign the following permissions
+
+```
+['create']
+```
+
+For the `messages` class assign the following permissions
+
+```
+['create']
+```
+
+iOS Project Setup
+-----------------
+There is very little setup for the iOS project itself. Simply run
 
 ```
 pod install
