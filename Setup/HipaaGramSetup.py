@@ -86,22 +86,40 @@ r = s.post(route, data=json.dumps(data), headers=headers)
 resp = r.json()
 r.raise_for_status()
 
+# create the CreateRetrieve default group
+route = '{}/v2/groups'.format(base_url)
+data = {'name':'CreateRetrieve','default':True}
+r = s.post(route, data=json.dumps(data), headers=headers)
+resp = r.json()
+r.raise_for_status()
+
+create_retrieve_groups_id = resp['groupsId']
+
+# create the Create default group
+route = '{}/v2/groups'.format(base_url)
+data = {'name':'Create','default':True}
+r = s.post(route, data=json.dumps(data), headers=headers)
+resp = r.json()
+r.raise_for_status()
+
+create_groups_id = resp['groupsId']
+
 # set create permissions for contacts class for the app
-route = '{}/v2/acl/custom/contacts/{}'.format(base_url, app_id)
+route = '{}/v2/acl/custom/contacts/{}'.format(base_url, create_retrieve_groups_id)
 data = ['create', 'retrieve']
 r = s.post(route, data=json.dumps(data), headers=headers)
 resp = r.json()
 r.raise_for_status()
 
 # set create permissions for conversations class for the app
-route = '{}/v2/acl/custom/conversations/{}'.format(base_url, app_id)
+route = '{}/v2/acl/custom/conversations/{}'.format(base_url, create_groups_id)
 data = ['create']
 r = s.post(route, data=json.dumps(data), headers=headers)
 resp = r.json()
 r.raise_for_status()
 
 # set create permissions for messages class for the app
-route = '{}/v2/acl/custom/messages/{}'.format(base_url, app_id)
+route = '{}/v2/acl/custom/messages/{}'.format(base_url, create_groups_id)
 data = ['create']
 r = s.post(route, data=json.dumps(data), headers=headers)
 resp = r.json()
