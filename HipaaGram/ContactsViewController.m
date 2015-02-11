@@ -59,7 +59,7 @@
     CatalyzeQuery *query = [CatalyzeQuery queryWithClassName:@"contacts"];
     [query setPageNumber:1];
     [query setPageSize:100];
-    [query retrieveInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+    [query retrieveAllEntriesInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (error) {
             [[[UIAlertView alloc] initWithTitle:@"Error" message:[NSString stringWithFormat:@"Could not fetch the contacts: %@", error.localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
         } else {
