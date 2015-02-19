@@ -44,7 +44,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     
-    [Catalyze setApiKey:@"75a963be-5810-4c04-929b-39aa1abbcd25" applicationId:@"accf0e0c-3d34-447e-8e63-16da08781f14"];
+    [Catalyze setApiKey:@"" applicationId:@""];
     [Catalyze setLoggingLevel:kLoggingLevelDebug];
     
     return YES;
